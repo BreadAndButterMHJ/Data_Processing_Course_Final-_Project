@@ -4,7 +4,7 @@
 
 我采用的数据集是:[Bike Sharing Dataset](https://www.kaggle.com/datasets/lakshmi25npathi/bike-sharing-dataset)
 
-数据集说明:[Readme.txt](data\Readme.txt)
+数据集说明:[Readme.txt](data/Readme.txt)
 
 系统提供以下主要功能模块：
 
@@ -50,4 +50,4 @@
 - 可通过 GUI 展示各聚类类中心特征，以帮助用户理解相似模式的分组。
   
 目前正在编写代码中，放个三鹰，提高一下我的编程热情。
-![鹰鹰鹰]()
+![鹰鹰鹰](img/鹰鹰鹰.png)
