@@ -1,8 +1,13 @@
 # 自行车租赁量分析与预测系统
 
-该项目主要是我的数据处理课程的期末项目，这里写一个readme文件主要是熟悉github的使用。系统提供以下主要功能模块：
+该项目主要是我的数据处理课程的期末项目，这里写一个readme文件主要是熟悉github的使用。
+
 我采用的数据集是:[Bike Sharing Dataset](https://www.kaggle.com/datasets/lakshmi25npathi/bike-sharing-dataset)
+
 数据集说明:[Readme.txt](\data\Readme.txt)
+
+系统提供以下主要功能模块：
+
 
 1. **GUI 界面制作**：  
    直观易用的图形化界面，用户可在其中查看数据、选择参数进行预测，并查看聚类结果。
