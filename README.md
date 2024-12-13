@@ -4,7 +4,7 @@
 
 我采用的数据集是:[Bike Sharing Dataset](https://www.kaggle.com/datasets/lakshmi25npathi/bike-sharing-dataset)
 
-数据集说明:[Readme.txt](\data\Readme.txt)
+数据集说明:[Readme.txt](data\Readme.txt)
 
 系统提供以下主要功能模块：
 
