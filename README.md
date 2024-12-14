@@ -1,6 +1,6 @@
 # 自行车租赁量分析与预测系统
 
-该项目主要是我的数据处理课程的期末项目，这里写一个readme文件主要是熟悉github的使用。
+该项目主要是我的数据处理课程的期末项目，这里写一个readme文件主要是熟悉github的使用，之后也希望能通过这个readme写一下我的期末报告。
 
 我采用的数据集是:[Bike Sharing Dataset](https://www.kaggle.com/datasets/lakshmi25npathi/bike-sharing-dataset)
 
