@@ -8,15 +8,17 @@ plt.rcParams['font.sans-serif'] = ['SimHei']
 plt.rcParams['axes.unicode_minus'] = False
 
 
-def season_boxplot(data):
+def season_boxplot():
     """
     绘制箱线图
     :param data:data_day
     :return:
     """
+    data_hour, data_day = data_processing.load_data()
+    data = data_day
     season = ['冬季', '春季', '夏季', '秋季']
     season_data = []
-    plt.figure(figsize=(12, 8))
+    plt.figure(figsize=(8, 5))
     for i in range(1, 5):
         season_data.append(data.original_data[data.original_data['season'] == i]['cnt'].values)
     season_colors = ['#ADD8E6', '#90EE90', '#006400', '#FFD700']
@@ -31,8 +33,7 @@ def season_boxplot(data):
     plt.title('不同季节的日租凭人数箱线图', fontsize=14)
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
-    plt.show()
+    plt.savefig('season_boxplot.png')
 
 
-data_hour, data_day = data_processing.load_data()
-season_boxplot(data_day)
+season_boxplot()

@@ -1,8 +1,13 @@
-from PyQt5.QtCore import QSize
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel, QStackedWidget, QComboBox
 import sys
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QFormLayout, QLineEdit
+
+from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QLabel, QComboBox
+from PyQt5.QtWidgets import QLineEdit
+
+sys.path.append("../utils")
+import visualization
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -52,12 +57,21 @@ class MainWindow(QMainWindow):
             button.deleteLater()
         self.new_buttons.clear()
 
+    def show_data_visualization_button1(self):
+        visualization.season_boxplot()
+        self.image_label = QLabel(self.central_widget)
+        self.image_label.setGeometry(180, 70, 800, 500)  # 设置图片显示位置和大小
+        self.image_label.setPixmap(QPixmap(r"season_boxplot.png"))  # 加载并显示图片
+        self.new_buttons.append(self.image_label)
+        self.image_label.show()
+
     def data_visualization_button_show(self):
         self.clear_new_buttons()
 
         new_button1 = QPushButton("季节租凭人数箱线图", self.central_widget)
         new_button1.setGeometry(225, 20, 130, 40)
         new_button1.setStyleSheet("font-size: 12px;")
+        new_button1.clicked.connect(self.show_data_visualization_button1)
         self.new_buttons.append(new_button1)
 
         new_button2 = QPushButton("新按钮2", self.central_widget)
@@ -83,7 +97,6 @@ class MainWindow(QMainWindow):
         for button in self.new_buttons:
             button.show()
 
-
     def clustering_button_show(self):
         self.clear_new_buttons()
         new_button1 = QPushButton("Kmeans聚类结果图", self.central_widget)
@@ -98,7 +111,6 @@ class MainWindow(QMainWindow):
 
         for button in self.new_buttons:
             button.show()
-
 
     def prediction_button_show(self):
         self.clear_new_buttons()
@@ -142,7 +154,7 @@ class MainWindow(QMainWindow):
 
         self.input_field_time = QComboBox(self.central_widget)
         self.input_field_time.setGeometry(720, 20, 105, 40)
-        self.input_field_time.addItems([str(time)+':00' for time in range(24)])
+        self.input_field_time.addItems([str(time) + ':00' for time in range(24)])
         self.input_field_time.setStyleSheet("font-size: 14px;")
         self.new_buttons.append(self.input_field_time)
         label4 = QLabel("时间", self.central_widget)
@@ -154,7 +166,7 @@ class MainWindow(QMainWindow):
         self.input_field_month.setGeometry(845, 20, 105, 40)
         self.input_field_month.setPlaceholderText("月份")
         self.input_field_month.setStyleSheet("font-size: 14px;")
-        self.input_field_month.addItems([str(month)+'月' for month in range(1, 13)])
+        self.input_field_month.addItems([str(month) + '月' for month in range(1, 13)])
         self.new_buttons.append(self.input_field_month)
         label5 = QLabel("月份", self.central_widget)
         label5.setGeometry(845, 60, 105, 40)
