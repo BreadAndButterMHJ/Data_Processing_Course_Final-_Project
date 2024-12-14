@@ -1,9 +1,8 @@
 from PyQt5.QtCore import QSize
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel, QStackedWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel, QStackedWidget, QComboBox
 import sys
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QFormLayout, QLineEdit
-
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -17,7 +16,7 @@ class MainWindow(QMainWindow):
 
         # 增加导航栏标题以及图片
         self.label = QLabel(self.central_widget)
-        self.label.setGeometry(45, 50, 200, 50)
+        self.label.setGeometry(45, 90, 200, 50)
         self.label.setText("导航栏")
         self.label.setStyleSheet("font-size: 30px;")
         self.new_buttons = []
@@ -105,20 +104,65 @@ class MainWindow(QMainWindow):
         self.clear_new_buttons()
 
         self.input_field_temp = QLineEdit(self.central_widget)
-        self.input_field_temp.setGeometry(270, 200, 300, 40)
-        self.input_field_temp.setPlaceholderText("请输入温度")
+        self.input_field_temp.setGeometry(220, 20, 105, 40)
         self.input_field_temp.setStyleSheet("font-size: 14px;")
         self.new_buttons.append(self.input_field_temp)
+        label = QLabel("温度（例：0.5）", self.central_widget)
+        label.setGeometry(220, 60, 105, 40)
+        label.setStyleSheet("font-size: 14px;")
+        self.new_buttons.append(label)
 
         self.input_field_hum = QLineEdit(self.central_widget)
-        self.input_field_hum.setGeometry(270, 300, 300, 40)
-        self.input_field_hum.setPlaceholderText("请输入湿度")
+        self.input_field_hum.setGeometry(345, 20, 105, 40)
         self.input_field_hum.setStyleSheet("font-size: 14px;")
         self.new_buttons.append(self.input_field_hum)
+        label1 = QLabel("湿度（例：0.85）", self.central_widget)
+        label1.setGeometry(345, 60, 105, 40)
+        label1.setStyleSheet("font-size: 14px;")
+        self.new_buttons.append(label1)
 
-        # Create a button to trigger the output
-        self.output_button = QPushButton("输出", self.central_widget)
-        self.output_button.setGeometry(270, 70, 300, 40)
+        self.input_field_windspeed = QLineEdit(self.central_widget)
+        self.input_field_windspeed.setGeometry(470, 20, 105, 40)
+        self.input_field_windspeed.setStyleSheet("font-size: 14px;")
+        self.new_buttons.append(self.input_field_windspeed)
+        label2 = QLabel("风速（例：0.5）", self.central_widget)
+        label2.setGeometry(470, 60, 105, 40)
+        label2.setStyleSheet("font-size: 14px;")
+        self.new_buttons.append(label2)
+
+        self.input_field_workingday = QComboBox(self.central_widget)
+        self.input_field_workingday.setGeometry(595, 20, 105, 40)
+        self.input_field_workingday.addItems(["是", "否"])
+        self.input_field_workingday.setStyleSheet("font-size: 14px;")
+        self.new_buttons.append(self.input_field_workingday)
+        label3 = QLabel("是否工作日", self.central_widget)
+        label3.setGeometry(595, 60, 105, 40)
+        label3.setStyleSheet("font-size: 14px;")
+        self.new_buttons.append(label3)
+
+        self.input_field_time = QComboBox(self.central_widget)
+        self.input_field_time.setGeometry(720, 20, 105, 40)
+        self.input_field_time.addItems([str(time)+':00' for time in range(24)])
+        self.input_field_time.setStyleSheet("font-size: 14px;")
+        self.new_buttons.append(self.input_field_time)
+        label4 = QLabel("时间", self.central_widget)
+        label4.setGeometry(720, 60, 105, 40)
+        label4.setStyleSheet("font-size: 14px;")
+        self.new_buttons.append(label4)
+
+        self.input_field_month = QComboBox(self.central_widget)
+        self.input_field_month.setGeometry(845, 20, 105, 40)
+        self.input_field_month.setPlaceholderText("月份")
+        self.input_field_month.setStyleSheet("font-size: 14px;")
+        self.input_field_month.addItems([str(month)+'月' for month in range(1, 13)])
+        self.new_buttons.append(self.input_field_month)
+        label5 = QLabel("月份", self.central_widget)
+        label5.setGeometry(845, 60, 105, 40)
+        label5.setStyleSheet("font-size: 14px;")
+        self.new_buttons.append(label5)
+
+        self.output_button = QPushButton("输出24小时租凭量变化", self.central_widget)
+        self.output_button.setGeometry(30, 20, 150, 40)
         self.output_button.setStyleSheet("font-size: 14px;")
         self.output_button.clicked.connect(self.perform_output)
         self.new_buttons.append(self.output_button)
@@ -130,6 +174,10 @@ class MainWindow(QMainWindow):
         print("输出")
         print(self.input_field_temp.text())
         print(self.input_field_hum.text())
+        print(self.input_field_windspeed.text())
+        print(self.input_field_workingday.currentText())
+        print(self.input_field_time.currentText())
+        print(self.input_field_month.currentText())
 
 
 if __name__ == "__main__":

@@ -6,15 +6,15 @@ pd.set_option('display.max_columns', 100)
 class MyData():
     def __init__(self, file_path):
         """
-        这里我要去掉一些不需要的特征，去除dteday，instant ，yr，temp，casual，registered
+        这里我要去掉一些不需要的特征，去除dteday，instant ，yr，atemp，casual，registered
         yr这个特征是年份，我们只有两年的数据，所以这个特征对我们的预测没有帮助
         instant是每一行的编号，对我们的预测没有帮助
         去除temp是因为temp和atemp是高度相关的，去除casual和registered是因为我们要预测的是cnt
         """
         self.data = pd.read_csv(file_path)
-        self.data = self.data.drop(['dteday', 'instant', 'yr', 'temp', 'casual', 'registered'], axis=1)
-        self.data_atemp_max = 50
-        self.data_atemp_min = -16
+        self.data = self.data.drop(['dteday', 'instant', 'yr', 'atemp', 'casual', 'registered'], axis=1)
+        self.data_temp_max = 39
+        self.data_temp_min = -8
         self.data_windspeed_max = 67
         self.data_hum_max = 100
         self.original_data = self.data.copy()
@@ -22,13 +22,13 @@ class MyData():
         self.data = self.feature_engineering(self.data)
 
     def data_denormalization(self, data):
-        data['atemp'] = data['atemp'] * (self.data_atemp_max - self.data_atemp_min) + self.data_atemp_min
+        data['temp'] = data['temp'] * (self.data_temp_max - self.data_temp_min) + self.data_temp_min
         data['windspeed'] = data['windspeed'] * self.data_windspeed_max
         data['hum'] = data['hum'] * self.data_hum_max
         return data
 
     def data_normalization(self, data):
-        data['atemp'] = (data['atemp'] - self.data_atemp_min) / (self.data_atemp_max - self.data_atemp_min)
+        data['atemp'] = (data['atemp'] - self.data_temp_min) / (self.data_temp_max - self.data_temp_min)
         data['windspeed'] = data['windspeed'] / self.data_windspeed_max
         data['hum'] = data['hum'] / self.data_hum_max
         return data
@@ -63,4 +63,4 @@ def load_data():
 
 if __name__ == '__main__':
     data_hour, data_day = load_data()
-    print(data_day.original_data[:])
+    print(data_hour)
