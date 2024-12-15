@@ -7,13 +7,16 @@ from PyQt5.QtWidgets import QLineEdit
 
 sys.path.append("../utils")
 import visualization
+import data_processing
 
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, data_hour, data_day):
         super().__init__()
         self.setWindowTitle("自行车租赁量分析与预测系统")
         self.setGeometry(600, 300, 1000, 600)
+        self.data_hour = data_hour
+        self.data_day = data_day
 
         # 主窗口布局
         self.central_widget = QWidget()
@@ -78,18 +81,21 @@ class MainWindow(QMainWindow):
         new_button2.clicked.connect(self.show_data_visualization_button2)
         self.new_buttons.append(new_button2)
 
-        new_button3 = QPushButton("新按钮3", self.central_widget)
+        new_button3 = QPushButton("月份时间人数热力图", self.central_widget)
         new_button3.setGeometry(535, 20, 130, 40)
         new_button3.setStyleSheet("font-size: 12px;")
+        new_button3.clicked.connect(self.show_data_visualization_button3)
         self.new_buttons.append(new_button3)
 
-        new_button4 = QPushButton("新按钮4", self.central_widget)
+        new_button4 = QPushButton("天气情况节假日人数", self.central_widget)
         new_button4.setGeometry(690, 20, 130, 40)
         new_button4.setStyleSheet("font-size: 12px;")
+        new_button4.clicked.connect(self.show_data_visualization_button4)
         self.new_buttons.append(new_button4)
 
-        new_button5 = QPushButton("新按钮5", self.central_widget)
+        new_button5 = QPushButton("天气参数租凭人数R值", self.central_widget)
         new_button5.setGeometry(845, 20, 130, 40)
+        new_button5.clicked.connect(self.show_data_visualization_button5)
         new_button5.setStyleSheet("font-size: 12px;")
         self.new_buttons.append(new_button5)
 
@@ -98,7 +104,6 @@ class MainWindow(QMainWindow):
 
     def show_data_visualization_button1(self):
         self.clear_img_label()
-        visualization.season_boxplot()
         image_label = QLabel(self.central_widget)
         image_label.setGeometry(250, 125, 700, 450)
         image_label.setPixmap(QPixmap(r"season_boxplot.png"))
@@ -107,10 +112,36 @@ class MainWindow(QMainWindow):
 
     def show_data_visualization_button2(self):
         self.clear_img_label()
-        visualization.month_cnt()
         image_label = QLabel(self.central_widget)
         image_label.setGeometry(250, 125, 700, 450)
         image_label.setPixmap(QPixmap(r"month_cnt_with_rate.png"))
+        self.img_label.append(image_label)
+        image_label.show()
+
+    def show_data_visualization_button3(self):
+        self.clear_img_label()
+        image_label = QLabel(self.central_widget)
+        image_label.setGeometry(250, 125, 700, 450)
+        visualization.hour_month_heatmap(self.data_hour)
+        image_label.setPixmap(QPixmap(r"hour_month_heatmap.png"))
+        self.img_label.append(image_label)
+        image_label.show()
+
+    def show_data_visualization_button4(self):
+        self.clear_img_label()
+        image_label = QLabel(self.central_widget)
+        image_label.setGeometry(250, 125, 700, 450)
+        visualization.holiday_workingday_weathersit(self.data_day)
+        image_label.setPixmap(QPixmap(r"holiday_workingday_weathersit.png"))
+        self.img_label.append(image_label)
+        image_label.show()
+
+    def show_data_visualization_button5(self):
+        self.clear_img_label()
+        image_label = QLabel(self.central_widget)
+        image_label.setGeometry(250, 125, 700, 450)
+        visualization.windspeed_temp_hum_cnt_relation(self.data_day)
+        image_label.setPixmap(QPixmap(r"windspeed_temp_hum_cnt_relation.png"))
         self.img_label.append(image_label)
         image_label.show()
 
@@ -210,7 +241,8 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == "__main__":
+    data_hour, data_day = data_processing.load_data()
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = MainWindow(data_hour, data_day)
     window.show()
     sys.exit(app.exec_())

@@ -12,9 +12,9 @@ class MyData():
         去除temp是因为temp和atemp是高度相关的，去除casual和registered是因为我们要预测的是cnt
         """
         self.data = pd.read_csv(file_path)
-        self.data = self.data.drop(['dteday', 'instant', 'yr', 'atemp'], axis=1)
+        self.data = self.data.drop(['dteday', 'instant', 'atemp'], axis=1)
         self.original_data = self.data.copy()
-        self.data = self.data.drop(['casual', 'registered'], axis=1)
+        self.data = self.data.drop(['casual', 'registered', 'yr'], axis=1)
         self.data_temp_max = 39
         self.data_temp_min = -8
         self.data_windspeed_max = 67
