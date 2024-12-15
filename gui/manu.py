@@ -19,18 +19,19 @@ class MainWindow(QMainWindow):
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
 
-        # 增加导航栏标题以及图片
-        self.label = QLabel(self.central_widget)
-        self.label.setGeometry(45, 90, 200, 50)
-        self.label.setText("导航栏")
-        self.label.setStyleSheet("font-size: 30px;")
+        self.background_image_label = QLabel(self.central_widget)
+        self.background_image_label.setGeometry(0, 0, 1000, 600)  # 设置额外图片显示位置和大小
+        self.background_image_label.setPixmap(QPixmap(r"../img/backgroud.png"))  # 加载并显示额外图片
+        self.background_image_label.show()
+
         self.new_buttons = []
+        self.img_label = []
         self.add_buttons()
 
     def add_buttons(self):
         # 创建数据可视化按钮
         self.button1 = QPushButton("数据可视化", self.central_widget)
-        self.button1.setGeometry(25, 150, 150, 75)
+        self.button1.setGeometry(25, 250, 150, 75)
         self.button1.setStyleSheet("font-size: 20px;")
         self.button1.setIcon(QIcon(r"../img/数据可视化.png"))
         self.button1.setIconSize(QSize(25, 25))
@@ -38,7 +39,7 @@ class MainWindow(QMainWindow):
 
         # 创建聚类功能按钮
         self.button2 = QPushButton("聚类", self.central_widget)
-        self.button2.setGeometry(25, 300, 150, 75)
+        self.button2.setGeometry(25, 350, 150, 75)
         self.button2.setStyleSheet("font-size: 20px;")
         self.button2.setIcon(QIcon(r"../img/聚类.png"))
         self.button2.setIconSize(QSize(25, 25))
@@ -57,13 +58,10 @@ class MainWindow(QMainWindow):
             button.deleteLater()
         self.new_buttons.clear()
 
-    def show_data_visualization_button1(self):
-        visualization.season_boxplot()
-        self.image_label = QLabel(self.central_widget)
-        self.image_label.setGeometry(180, 70, 800, 500)  # 设置图片显示位置和大小
-        self.image_label.setPixmap(QPixmap(r"season_boxplot.png"))  # 加载并显示图片
-        self.new_buttons.append(self.image_label)
-        self.image_label.show()
+    def clear_img_label(self):
+        for label in self.img_label:
+            label.deleteLater()
+        self.img_label.clear()
 
     def data_visualization_button_show(self):
         self.clear_new_buttons()
@@ -74,9 +72,10 @@ class MainWindow(QMainWindow):
         new_button1.clicked.connect(self.show_data_visualization_button1)
         self.new_buttons.append(new_button1)
 
-        new_button2 = QPushButton("新按钮2", self.central_widget)
+        new_button2 = QPushButton("月份租凭人数折线图", self.central_widget)
         new_button2.setGeometry(380, 20, 130, 40)
         new_button2.setStyleSheet("font-size: 12px;")
+        new_button2.clicked.connect(self.show_data_visualization_button2)
         self.new_buttons.append(new_button2)
 
         new_button3 = QPushButton("新按钮3", self.central_widget)
@@ -96,6 +95,24 @@ class MainWindow(QMainWindow):
 
         for button in self.new_buttons:
             button.show()
+
+    def show_data_visualization_button1(self):
+        self.clear_img_label()
+        visualization.season_boxplot()
+        image_label = QLabel(self.central_widget)
+        image_label.setGeometry(250, 125, 700, 450)
+        image_label.setPixmap(QPixmap(r"season_boxplot.png"))
+        self.img_label.append(image_label)
+        image_label.show()
+
+    def show_data_visualization_button2(self):
+        self.clear_img_label()
+        visualization.month_cnt()
+        image_label = QLabel(self.central_widget)
+        image_label.setGeometry(250, 125, 700, 450)
+        image_label.setPixmap(QPixmap(r"month_cnt_with_rate.png"))
+        self.img_label.append(image_label)
+        image_label.show()
 
     def clustering_button_show(self):
         self.clear_new_buttons()
