@@ -6,6 +6,9 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QLa
 from PyQt5.QtWidgets import QLineEdit
 
 sys.path.append("../utils")
+sys.path.append("../models")
+sys.path.append("../data")
+import XGboost_pre as XGBoost
 import visualization
 import data_processing
 
@@ -17,6 +20,7 @@ class MainWindow(QMainWindow):
         self.setGeometry(600, 300, 1000, 600)
         self.data_hour = data_hour
         self.data_day = data_day
+        self.pre_model = XGBoost.PredictCnt()
 
         # 主窗口布局
         self.central_widget = QWidget()
@@ -178,7 +182,6 @@ class MainWindow(QMainWindow):
         self.img_label.append(image_label)
         image_label.show()
 
-
     def prediction_button_show(self):
         self.clear_new_buttons()
 
@@ -187,7 +190,7 @@ class MainWindow(QMainWindow):
         self.input_field_temp.setStyleSheet("font-size: 14px;")
         self.new_buttons.append(self.input_field_temp)
         label = QLabel("温度（例：0.5）", self.central_widget)
-        label.setGeometry(220, 60, 105, 40)
+        label.setGeometry(270, 60, 105, 40)
         label.setStyleSheet("font-size: 14px;")
         self.new_buttons.append(label)
 
@@ -197,7 +200,7 @@ class MainWindow(QMainWindow):
         self.input_field_workingday.setStyleSheet("font-size: 14px;")
         self.new_buttons.append(self.input_field_workingday)
         label3 = QLabel("是否工作日", self.central_widget)
-        label3.setGeometry(595, 60, 105, 40)
+        label3.setGeometry(470, 60, 105, 40)
         label3.setStyleSheet("font-size: 14px;")
         self.new_buttons.append(label3)
 
@@ -207,7 +210,7 @@ class MainWindow(QMainWindow):
         self.input_field_time.setStyleSheet("font-size: 14px;")
         self.new_buttons.append(self.input_field_time)
         label4 = QLabel("时间", self.central_widget)
-        label4.setGeometry(720, 60, 105, 40)
+        label4.setGeometry(660, 60, 105, 40)
         label4.setStyleSheet("font-size: 14px;")
         self.new_buttons.append(label4)
 
@@ -218,11 +221,11 @@ class MainWindow(QMainWindow):
         self.input_field_month.addItems([str(month) + '月' for month in range(1, 13)])
         self.new_buttons.append(self.input_field_month)
         label5 = QLabel("月份", self.central_widget)
-        label5.setGeometry(845, 60, 105, 40)
+        label5.setGeometry(850, 60, 105, 40)
         label5.setStyleSheet("font-size: 14px;")
         self.new_buttons.append(label5)
 
-        self.output_button = QPushButton("输出24小时租凭量变化", self.central_widget)
+        self.output_button = QPushButton("输出预测租凭值", self.central_widget)
         self.output_button.setGeometry(30, 20, 150, 40)
         self.output_button.setStyleSheet("font-size: 14px;")
         self.output_button.clicked.connect(self.perform_output)
@@ -232,11 +235,17 @@ class MainWindow(QMainWindow):
             button.show()
 
     def perform_output(self):
-        print("输出")
-        print(self.input_field_temp.text())
-        print(self.input_field_workingday.currentText())
-        print(self.input_field_time.currentText())
-        print(self.input_field_month.currentText())
+        month = int(self.input_field_month.currentText()[:-1])
+        time = int(self.input_field_time.currentText()[:-3])
+        is_workday = 1 if self.input_field_workingday.currentText() == "是" else 0
+        temp = float(self.input_field_temp.text())
+        pre = self.pre_model.predict(month, time, is_workday, temp)
+        self.clear_img_label()
+        image_label = QLabel(self.central_widget)
+        image_label.setGeometry(250, 125, 700, 450)
+        image_label.setPixmap(QPixmap(r'../img/predict_cnt.png'))
+        self.img_label.append(image_label)
+        image_label.show()
 
 
 if __name__ == "__main__":
