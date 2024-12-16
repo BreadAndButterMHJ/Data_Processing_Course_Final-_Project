@@ -64,4 +64,4 @@ def load_data():
 
 if __name__ == '__main__':
     data_hour, data_day = load_data()
-    print(data_hour)
+    print(data_day)
